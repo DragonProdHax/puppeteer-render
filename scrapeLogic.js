@@ -14,30 +14,24 @@ const scrapeLogic = async (res) => {
         ? process.env.PUPPETEER_EXECUTABLE_PATH
         : puppeteer.executablePath(),
   });
+
   try {
     const page = await browser.newPage();
+    await page.goto("https://blooketbot.glitch.me");
 
-    await page.goto("https://developer.chrome.com/");
+    // Wait for elements to load
+    await page.waitForSelector("#gcode");
+    await page.waitForSelector("#gname");
 
-    // Set screen size
-    await page.setViewport({ width: 1080, height: 1024 });
+    // Run JavaScript in the browser context to fill out the form
+    await page.evaluate(() => {
+      document.querySelector("#gcode").value = "567273"; // Set the game code
+      document.querySelector("#gname").value = "sam";    // Set the username
+      join(); // Run the join function
+    });
 
-    // Type into search box
-    await page.type(".search-box__input", "automate beyond recorder");
-
-    // Wait and click on first result
-    const searchResultSelector = ".search-box__link";
-    await page.waitForSelector(searchResultSelector);
-    await page.click(searchResultSelector);
-
-    // Locate the full title with a unique string
-    const textSelector = await page.waitForSelector(
-      "text/Customize and automate"
-    );
-    const fullTitle = await textSelector.evaluate((el) => el.textContent);
-
-    // Print the full title
-    const logStatement = `The title of this blog post is ${fullTitle}`;
+    // Respond with a confirmation message
+    const logStatement = "Successfully joined the game with code 567273 and name 'sam'.";
     console.log(logStatement);
     res.send(logStatement);
   } catch (e) {
