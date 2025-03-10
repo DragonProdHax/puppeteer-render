@@ -25,7 +25,7 @@ const scrapeLogic = async (res) => {
 
     // Run JavaScript in the browser context to fill out the form
     await page.evaluate(() => {
-      document.querySelector("#gcode").value = "567273"; // Set the game code
+      document.querySelector("#gcode").value = "1248364"; // Set the game code
       document.querySelector("#gname").value = "sam";    // Set the username
       join(); // Run the join function
     });
