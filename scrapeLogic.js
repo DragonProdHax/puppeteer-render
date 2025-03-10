@@ -23,6 +23,9 @@ const scrapeLogic = async (res) => {
     await page.waitForSelector("#gcode");
     await page.waitForSelector("#gname");
 
+    // Wait for any additional element that might be required (e.g., the 'join' button or confirmation)
+    await page.waitForSelector("#joinButton"); // Assuming there's a button with id 'joinButton'
+
     // Run JavaScript in the browser context to fill out the form
     await page.evaluate(() => {
       document.querySelector("#gcode").value = "1248364"; // Set the game code
@@ -31,7 +34,7 @@ const scrapeLogic = async (res) => {
     });
 
     // Respond with a confirmation message
-    const logStatement = "Successfully joined the game with code 567273 and name 'sam'.";
+    const logStatement = "Successfully joined the game with code 1248364 and name 'sam'.";
     console.log(logStatement);
     res.send(logStatement);
   } catch (e) {
